@@ -1,0 +1,6 @@
+raw_data_dir: /tank/msmt_share/raw_data
+run_name: '230915'
+platform: miseq
+miptools_sif: /home/asimkin/big_data/miptools_20210430b.sif
+#/home/asimkin/big_data/miptools_20210430b.sif
+#/tank/msmt_share/bin/miptools_dev_plus_bcl2fastq_23-08-25.sif
