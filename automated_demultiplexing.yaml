@@ -1,6 +1,9 @@
 raw_data_dir: /tank/msmt_share/raw_data
-run_name: '230915'
+run_name: '230919'
 platform: miseq
-miptools_sif: /home/asimkin/big_data/miptools_20210430b.sif
+miptools_sif: /tank/msmt_share/bin/miptools_dev_plus_bcl2fastq_23-08-25.sif
+sample_sheet_name: SampleSheet.csv
+
+#for use with old (pre May 2021) sif files:
+#sample_sheet_name: 230919_samples.tsv
 #/home/asimkin/big_data/miptools_20210430b.sif
-#/tank/msmt_share/bin/miptools_dev_plus_bcl2fastq_23-08-25.sif

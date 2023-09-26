@@ -53,8 +53,8 @@ rule demultiplex_samples:
 	params:
 		output_folder=output_folder,
 		bcl_dir=output_folder+'/'+config['run_name'],
-#		sample_sheet_name='SampleSheet.csv',
-		sample_sheet_name=config['run_name']+'_samples.tsv',
+		sample_sheet_name=config['sample_sheet_name'],
+#		sample_sheet_name=config['run_name']+'_samples.tsv',
 		extra=config['extra']
 	output:
 		demultiplexed_status='demultiplexing_finished.txt'
