@@ -34,17 +34,16 @@ rule generate_sample_sheet:
 		sample_sheet_name=config['run_name']+'_samples.tsv',
 		sample_plate=config['run_name']+'_sample_plates.tsv',
 		capture_plate=config['run_name']+'_capture_plates.tsv',
+		platform=config['platform']
 	output:
 		sample_sheet=output_folder+'/'+config['run_name']+'_samples.tsv'
 	shell:
 		'''
 		singularity exec -B {params.output_folder}:/opt/analysis \
 		{input.miptools_sif} python /opt/src/sample_sheet_prep.py -c \
-		{params.capture_plate} -s {params.sample_plate} \
+		{params.capture_plate} -s {params.sample_plate} -p {params.platform} \
 		-o {params.sample_sheet_name}
 		'''
-
-
 
 #demultiplexing
 rule demultiplex_samples:
@@ -54,15 +53,16 @@ rule demultiplex_samples:
 	params:
 		output_folder=output_folder,
 		bcl_dir=output_folder+'/'+config['run_name'],
+#		sample_sheet_name='SampleSheet.csv',
 		sample_sheet_name=config['run_name']+'_samples.tsv',
-		platform=config['platform']
+		extra=config['extra']
 	output:
 		demultiplexed_status='demultiplexing_finished.txt'
 	shell:
 		'''
 		singularity run --app demux -B {params.output_folder}:/opt/analysis \
 		-B {params.bcl_dir}:/opt/data {input.miptools_sif} \
-		-s {params.sample_sheet_name} -p {params.platform}
+		-s {params.sample_sheet_name} {params.extra}
 		touch demultiplexing_finished.txt
 		'''
 
