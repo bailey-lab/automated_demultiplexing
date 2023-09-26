@@ -1,5 +1,6 @@
 raw_data_dir: /home/alfred/automated_demultiplexing
-run_name: '230919'
+run_date: '230919'
+run_id: '230919'
 platform: miseq
 miptools_sif: /home/alfred/miptools_dev_plus_bcl2fastq_23-08-25.sif
 extra: ''
