@@ -22,7 +22,10 @@ output_folder=config['raw_data_dir']+'/'+config['run_name']+'_'+config['platform
 rule all:
 	input:
 		#sample_sheet=output_folder+'/'+config['run_name']+'_samples.tsv'	
-		demultiplexed_status='demultiplexing_finished.txt'
+#		demultiplexed_status='demultiplexing_finished.txt'
+#		demux_qc='demux_qc_finished.txt'
+		output_folder+'/'+config['run_name']+'_samples_readcnt.tsv'
+
 
 rule generate_sample_sheet:
 	input:
@@ -54,7 +57,6 @@ rule demultiplex_samples:
 		output_folder=output_folder,
 		bcl_dir=output_folder+'/'+config['run_name'],
 		sample_sheet_name=config['sample_sheet_name'],
-#		sample_sheet_name=config['run_name']+'_samples.tsv',
 		extra=config['extra']
 	output:
 		demultiplexed_status='demultiplexing_finished.txt'
@@ -66,21 +68,31 @@ rule demultiplex_samples:
 		touch demultiplexing_finished.txt
 		'''
 
-'''
-#demux_qc
-#run_dir=$run_name"_"$platform
-#data_dir=/work/bailey_share/raw_data/
-#run_dir=$data_dir$run_dir
-#bcl_dir=$run_dir"/"$run_id
-#fastq_dir=$run_dir"/fastq"
-#resource_dir=/work/bailey_share/bin/MIPTools_20210430/base_resources
-#container=/work/bailey_share/bin/MIPTools_20210430/miptools20210430b.sif
-#cd $run_dir
-#singularity run --app demux_qc -B $resource_dir:/opt/resources -B $fastq_dir:/opt/analysis -B $bcl_dir:/opt/data $container -p $platform
+rule get_stats:
+	input:
+		miptools_sif=config['miptools_sif'],
+		demultiplexed_status='demultiplexing_finished.txt'
+	params:
+		fastq_dir=output_folder+'/fastq',
+		bcl_dir=output_folder+'/'+config['run_name'],
+		platform=config['platform']
+	output:
+		demux_qc='demux_qc_finished.txt'
+	shell:
+		'''
+		singularity run --app demux_qc -B {params.fastq_dir}:/opt/analysis -B {params.bcl_dir}:/opt/data {input.miptools_sif} -p {params.platform}
+		touch demux_qc_finished.txt
+		'''
 
-#run mipscripts
-#python3 -m mipscripts 
-#sequencing_folder=$run_name"_"$platform
-#cd /tank/msmt_share/raw_data/$sequencing_folder/
-#python3 -m mipscripts seqrun_stats --samplesheet /tank/msmt_share/raw_data/$sequencing_folder/$run_name"_samples.tsv"
-'''
+rule run_mipscripts:
+	input:
+		demux_qc='demux_qc_finished.txt'
+	params:
+		sample_sheet=output_folder+'/'+config['run_name']+'_samples.tsv'
+	output:
+		output_folder+'/'+config['run_name']+'_samples_readcnt.tsv'
+	shell:
+		'''
+		pip install mipscripts
+		python3 -m mipscripts seqrun_stats --samplesheet {params.sample_sheet}		
+		'''
