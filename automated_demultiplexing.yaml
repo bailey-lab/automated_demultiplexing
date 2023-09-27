@@ -1,11 +1,22 @@
+#where your run folder is located
 raw_data_dir: /nfs/jbailey5/baileyweb/bailey_share/raw_data
+
+#date of sequencing and platform - expectation is that your data is in
+#a folder called (raw_data_dir)/(run_date)_(platform)
 run_date: '230919'
-run_id: '230919'
 platform: miseq
+
+#name needs to match a subfolder of (raw_data_dir)/(run_date)_(platform) that
+#contains all your raw data from the sequencer
+run_id: '230919'
+
+#a sif file to run the demultiplexer and stats
 miptools_sif: /nfs/jbailey5/baileyweb/bailey_share/bin/miptools_dev_plus_bcl2fastq_23-08-25.sif
+
+#these only need to be modified if using old sif files. Example alternate values below
 extra: ''
 sample_sheet_name: SampleSheet.csv
+
 #for use with old (pre May 2021) sif files:
 #sample_sheet_name: 230919_samples.tsv
 #extra: -p miseq
-#/home/alfred/Downloads/miptools_20210430b.sif
