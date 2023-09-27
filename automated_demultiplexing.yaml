@@ -1,8 +1,8 @@
-raw_data_dir: /home/alfred/automated_demultiplexing
+raw_data_dir: /nfs/jbailey5/baileyweb/bailey_share/raw_data
 run_date: '230919'
 run_id: '230919'
 platform: miseq
-miptools_sif: /home/alfred/miptools_dev_plus_bcl2fastq_23-08-25.sif
+miptools_sif: /nfs/jbailey5/baileyweb/bailey_share/bin/miptools_dev_plus_bcl2fastq_23-08-25.sif
 extra: ''
 sample_sheet_name: SampleSheet.csv
 #for use with old (pre May 2021) sif files:
